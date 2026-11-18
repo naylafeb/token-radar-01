@@ -76,6 +76,10 @@ if (shots.length < 3) {
   process.exit(1);
 }
 for (const name of shots) {
+  if (statSync(join(out, 'screenshots', name)).size > SCREENSHOT_CAPS.max_bytes) {
+    process.stderr.write(`token radar: screenshots/${name}: over ${SCREENSHOT_CAPS.max_bytes} bytes\n`);
+    process.exit(1);
+  }
   if (!IMAGE_NAME.test(name)) {
     process.stderr.write(`token radar: screenshots/${name}: a name is letters, digits and . _ -, 1 to 128 characters\n`);
     process.exit(1);
